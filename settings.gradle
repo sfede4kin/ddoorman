@@ -1,3 +1,5 @@
 rootProject.name = 'ddoorman'
-include 'client-service'
+include 'account-service'
+include 'door-service'
+include 'kafka-service'
 
