@@ -3,7 +3,8 @@ create table account
     id      bigserial not null primary key,
     name    varchar(50) not null,
     address varchar(255) not null,
-    phone   varchar(12) not null
+    phone   varchar(12) not null,
+    key_group_id bigint
 );
 
 create type key_type as enum ('app', 'dongle');
@@ -43,14 +44,6 @@ create table key_group_door_group
     primary key(key_group_id, door_group_id)
 );
 
---one account - one key group
-create table account_key_group
-(
-    account_id   bigint not null references account (id),
-    key_group_id bigint not null,
-    primary key(account_id, key_group_id)
-);
-
 create type event_type as enum ('open', 'opened', 'failed');
 create table door_event
 (
@@ -64,8 +57,8 @@ create table door_event
 );
 --Master data
 --account
-insert into account(name, address, phone ) values ('name1', 'address1', 'phone1');
-insert into account(name, address, phone ) values ('name2', 'address2', 'phone2');
+insert into account(name, address, phone, key_group_id) values ('name1', 'address1', 'phone1', '1');
+insert into account(name, address, phone, key_group_id) values ('name2', 'address2', 'phone2', '2');
 --door_key
 insert into door_key(type) values ('app');
 insert into door_key(type) values ('dongle');
@@ -96,6 +89,3 @@ insert into key_group_door_group(key_group_id, door_group_id) values ('1','2');
 insert into key_group_door_group(key_group_id, door_group_id) values ('2','1');
 insert into key_group_door_group(key_group_id, door_group_id) values ('2','2');
 insert into key_group_door_group(key_group_id, door_group_id) values ('2','3');
---account_key_group
-insert into account_key_group(account_id, key_group_id) values ('1', '1');
-insert into account_key_group(account_id, key_group_id) values ('2', '2');
