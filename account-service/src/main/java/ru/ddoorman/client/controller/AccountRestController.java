@@ -25,7 +25,7 @@ public class AccountRestController {
 
         log.debug(account.get().toString());
 
-        return account.map(DtoUtil::cloneAccount).orElse(null);
+        return account.map(DtoUtil::cloneAccountToDto).orElse(null);
     }
 
 }

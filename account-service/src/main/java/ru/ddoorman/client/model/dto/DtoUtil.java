@@ -1,25 +1,35 @@
 package ru.ddoorman.client.model.dto;
 
-import ru.ddoorman.client.model.Account;
-import ru.ddoorman.client.model.Key;
-import ru.ddoorman.client.model.KeyGroup;
+import ru.ddoorman.client.model.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class DtoUtil {
-    public static AccountDto cloneAccount(Account account){
+    public static AccountDto cloneAccountToDto(Account account){
         return new AccountDto(account.getId(), account.getName(), account.getAddress(), account.getPhone(),
-                account.getKeyGroupId(), cloneKeyDtoFromKeyGroups(account.getKeyGroups()));
+                cloneKeyGroupToDto(account.getKeyGroups()), cloneDoorGroupToDto(account.getDoorGroups()));
     }
 
-    public static KeyDto cloneKey(Key key){
+    public static Set<KeyGroupDto> cloneKeyGroupToDto(Set<KeyGroup> keyGroups){
+        var keyGroupDto = new HashSet<KeyGroupDto>();
+        keyGroups.forEach(k -> keyGroupDto.add(new KeyGroupDto(k.getId(), cloneKeyToDto(k.getKey()))));
+        return keyGroupDto;
+    }
+
+    public static KeyDto cloneKeyToDto(Key key){
         return new KeyDto(key.getId(), key.getType());
     }
 
-    public static Set<KeyDto> cloneKeyDtoFromKeyGroups(Set<KeyGroup> keyGroups){
-        var keysDto = new HashSet<KeyDto>();
-        keyGroups.forEach( k -> keysDto.add(cloneKey(k.getKey())));
-        return keysDto;
+    public static Set<DoorGroupDto> cloneDoorGroupToDto(Set<KeyGroupDoorGroup> doorGroups){
+        var doorGroupDto = new HashSet<DoorGroupDto>();
+        doorGroups.forEach(k -> {
+            k.getDoorGroups().forEach(k1 -> doorGroupDto.add(new DoorGroupDto(k1.getId(), cloneDoorToDto(k1.getDoor()))));
+        });
+        return doorGroupDto;
+    }
+
+    public static DoorDto cloneDoorToDto(Door door){
+        return new DoorDto(door.getId(), door.getLocation());
     }
 }

@@ -8,16 +8,17 @@ public class AccountDto {
     private String name;
     private String address;
     private String phone;
-    private Long keyGroupId;
-    private Set<KeyDto> keys;
+    private Set<KeyGroupDto> keyGroups;
+    private Set<DoorGroupDto> doorGroups;
 
-    public AccountDto(Long id, String name, String address, String phone, Long keyGroupId, Set<KeyDto> keys) {
+    public AccountDto(Long id, String name, String address, String phone, Set<KeyGroupDto> keyGroups,
+                      Set<DoorGroupDto> doorGroups) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.keyGroupId = keyGroupId;
-        this.keys = keys;
+        this.keyGroups = keyGroups;
+        this.doorGroups = doorGroups;
     }
 
     public Long getId() {
@@ -52,20 +53,20 @@ public class AccountDto {
         this.phone = phone;
     }
 
-    public Long getKeyGroupId() {
-        return keyGroupId;
+    public Set<KeyGroupDto> getKeyGroups() {
+        return keyGroups;
     }
 
-    public void setKeyGroupId(Long keyGroupId) {
-        this.keyGroupId = keyGroupId;
+    public void setKeyGroups(Set<KeyGroupDto> keyGroups) {
+        this.keyGroups = keyGroups;
     }
 
-    public Set<KeyDto> getKeys() {
-        return keys;
+    public Set<DoorGroupDto> getDoorGroups() {
+        return doorGroups;
     }
 
-    public void setKeys(Set<KeyDto> keys) {
-        this.keys = keys;
+    public void setDoorGroups(Set<DoorGroupDto> doorGroups) {
+        this.doorGroups = doorGroups;
     }
 
     @Override
@@ -75,8 +76,8 @@ public class AccountDto {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
-                ", keyGroupId=" + keyGroupId +
-                ", keys=" + keys +
+                ", keyGroups=" + keyGroups +
+                ", doorGroups=" + doorGroups +
                 '}';
     }
 }

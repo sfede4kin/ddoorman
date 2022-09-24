@@ -1,13 +1,13 @@
 package ru.ddoorman.client.model.dto;
 
-public class KeyGroupDto {
+public class DoorGroupDto {
 
     private Long id;
-    private KeyDto key;
+    private DoorDto door;
 
-    public KeyGroupDto(Long id, KeyDto key) {
+    public DoorGroupDto(Long id, DoorDto door) {
         this.id = id;
-        this.key = key;
+        this.door = door;
     }
 
     public Long getId() {
@@ -18,19 +18,19 @@ public class KeyGroupDto {
         this.id = id;
     }
 
-    public KeyDto getKey() {
-        return key;
+    public DoorDto getDoor() {
+        return door;
     }
 
-    public void setKeys(KeyDto key) {
-        this.key = key;
+    public void setKeys(DoorDto door) {
+        this.door = door;
     }
 
     @Override
     public String toString() {
-        return "KeyGroupDto{" +
+        return "DoorGroupDto{" +
                 "id=" + id +
-                ", key=" + key +
+                ", door=" + door +
                 '}';
     }
 }
