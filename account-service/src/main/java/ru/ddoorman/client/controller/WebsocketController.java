@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import ru.ddoorman.client.model.dto.AccountDto;
 import ru.ddoorman.client.model.dto.DtoUtil;
+import ru.ddoorman.client.model.dto.EventDto;
 import ru.ddoorman.client.service.AccountService;
 
 @Controller
@@ -25,5 +26,10 @@ public class WebsocketController {
         var account = accountService.findById(Long.valueOf(accountId));
         log.debug(account.get().toString());
         return account.map(DtoUtil::cloneAccountToDto).get();
+    }
+
+    @MessageMapping("/event.{accountId}")
+    public void sendEvent(@DestinationVariable String accountId, EventDto event){
+        log.debug(event.toString());
     }
 }

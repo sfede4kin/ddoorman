@@ -47,13 +47,13 @@ create table key_group_door_group
 create type event_type as enum ('open', 'opened', 'failed');
 create table door_event
 (
-    id   bigserial not null primary key,
-    ref_id bigint not null,
+    id         uuid not null primary key,
+    ref_id     uuid not null,
     account_id bigint not null references account (id),
-    key_id bigint not null references door_key (id),
-    door_id bigint not null references door (id),
-    ts timestamp,
-    type event_type not null
+    key_id     bigint not null references door_key (id),
+    door_id    bigint not null references door (id),
+    ts         timestamp,
+    type       event_type not null
 );
 --Master data
 --account
