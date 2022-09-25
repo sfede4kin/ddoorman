@@ -19,7 +19,7 @@ public class WebsocketController {
     }
 
     @MessageMapping("/account.{accountId}")
-    @SendTo("/topic/response.{accountId}")
+    @SendTo("/topic/profile.{accountId}")
     public AccountDto getAccount(@DestinationVariable String accountId) {
         log.info("account id:{}", accountId);
         var account = accountService.findById(Long.valueOf(accountId));
