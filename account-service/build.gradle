@@ -10,19 +10,39 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'ch.qos.logback:logback-classic'
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.postgresql:postgresql'
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.postgresql:postgresql")
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:sockjs-client")
     implementation("org.webjars:stomp-websocket")
     implementation("org.webjars:bootstrap")
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation ("org.assertj:assertj-core")
+    testImplementation ("org.mockito:mockito-core")
+    testImplementation ("org.mockito:mockito-junit-jupiter")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
 }
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
 }
