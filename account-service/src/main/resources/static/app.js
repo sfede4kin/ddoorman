@@ -54,9 +54,13 @@ const showProfile = (message) => {
 
     const doorTable = document.getElementById(doorElementId);
     var dg = message.doorGroups;
-    dg.forEach(elem => doorTable.insertAdjacentHTML('beforebegin', `<tr><td>${elem.door.id}</td><td>${elem.door.location}</td></tr>`));
+    dg.forEach(elem => doorTable.insertAdjacentHTML('beforebegin', `<tr><td>${elem.door.id}</td><td>${elem.door.location}</td><td><button id="openDoor" class="btn btn-success" onclick="openDoor(${elem.door.id})">Open</button></td></tr>`));
 }
 
 const clearData = () =>{
     $("#key-table tbody").remove();
+}
+
+const openDoor = (doorId) => {
+    console.log(doorId);
 }
