@@ -8,18 +8,14 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import ru.ddoorman.client.model.dto.AccountDto;
 import ru.ddoorman.client.model.dto.DtoUtil;
-import ru.ddoorman.client.model.dto.EventDto;
 import ru.ddoorman.client.service.AccountService;
-import ru.ddoorman.client.service.KafkaProducerService;
 
 @Controller
-public class WebsocketController {
-    private static final Logger log = LoggerFactory.getLogger(WebsocketController.class);
+public class AccountWebsocketController {
+    private static final Logger log = LoggerFactory.getLogger(AccountWebsocketController.class);
     private final AccountService accountService;
-    private final KafkaProducerService kafkaProducerService;
-    public WebsocketController(AccountService accountService, KafkaProducerService kafkaProducerService){
+    public AccountWebsocketController(AccountService accountService){
         this.accountService = accountService;
-        this.kafkaProducerService = kafkaProducerService;
     }
 
     @MessageMapping("/account.{accountId}")
@@ -29,11 +25,5 @@ public class WebsocketController {
         var account = accountService.findById(Long.valueOf(accountId));
         log.debug(account.get().toString());
         return account.map(DtoUtil::cloneAccountToDto).get();
-    }
-
-    @MessageMapping("/event.{accountId}")
-    public void sendEvent(@DestinationVariable String accountId, EventDto event){
-        log.debug(event.toString());
-        kafkaProducerService.sendMessage(event.toString());
     }
 }

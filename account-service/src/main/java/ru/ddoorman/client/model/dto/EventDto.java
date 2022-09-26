@@ -3,12 +3,11 @@ package ru.ddoorman.client.model.dto;
 import ru.ddoorman.client.model.enumeration.EventTypeEnum;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class EventDto {
 
-    private UUID id;
-    private UUID refId;
+    private String sourceId;
+    private String refId;
     private Long accountId;
     private Long keyId;
     private Long doorId;
@@ -17,8 +16,8 @@ public class EventDto {
 
     public EventDto(){};
 
-    public EventDto(UUID id, UUID refId, Long accountId, Long keyId, Long doorId, Date ts, EventTypeEnum type) {
-        this.id = id;
+    public EventDto(String sourceId, String refId, Long accountId, Long keyId, Long doorId, Date ts, EventTypeEnum type) {
+        this.sourceId = sourceId;
         this.refId = refId;
         this.accountId = accountId;
         this.keyId = keyId;
@@ -27,19 +26,19 @@ public class EventDto {
         this.type = type;
     }
 
-    public UUID getId() {
-        return id;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
-    public UUID getRefId() {
+    public String getRefId() {
         return refId;
     }
 
-    public void setRefId(UUID refId) {
+    public void setRefId(String refId) {
         this.refId = refId;
     }
 
@@ -86,7 +85,7 @@ public class EventDto {
     @Override
     public String toString() {
         return "EventDto{" +
-                "id=" + id +
+                "sourceId=" + sourceId +
                 ", refId=" + refId +
                 ", accountId=" + accountId +
                 ", keyId=" + keyId +

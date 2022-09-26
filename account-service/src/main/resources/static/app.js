@@ -51,7 +51,7 @@ const showProfile = (message) => {
 }
 
 const sendOpenDoorEvent = (doorId) => {
-    var body = {"id": getUUID(), "refId": "", "accountId": getAccountId(), "keyId": "", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
+    var body = {"sourceId": getUUID(), "refId": "", "accountId": getAccountId(), "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
     console.log(JSON.stringify(body));
     stompClient.send("/app/event." + accountId, {}, JSON.stringify(body));
 }

@@ -12,13 +12,15 @@ spring:
     replicas: 1
     topic:
       name: requestEventTopic
-    consumer:
+    producer:
       bootstrap-servers: localhost:9092
       group-id: app
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
 
 logging:
   level:
