@@ -1,5 +1,6 @@
 package ru.ddoorman.client.service;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +27,11 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
         ListenableFuture<SendResult<Long, EventDto>> future = kafkaTemplate.send(TOPIC_NAME, msg);
 
         future.addCallback(result -> {
-            log.info("kafka send ok");
+            log.info("kafka send ok, offset {}", result.getRecordMetadata().offset());
         }, (KafkaFailureCallback<Long, EventDto>) ex -> {
             log.error("kafka send error: {}", ex.getMessage());
             //ProducerRecord<Long, EventDto> failed = ex.getFailedProducerRecord();
         });
+
     }
 }
