@@ -19,10 +19,12 @@ const connect = () => {
         setConnected(true);
         getProfile();
 
+        getSessionId();
+
         const accountId = getAccountId();
         console.log(`Connected as account id: ${accountId} frame:${frame}`);
-        stompClient.subscribe('/topic/profile.' + accountId, (message) => showProfile(JSON.parse(message.body)));
-        stompClient.subscribe('/topic/response.event.' + accountId, (message) => showEvent(message.body));
+        stompClient.subscribe('/queue/profile.' + accountId + '-' + getSessionId(), (message) => showProfile(JSON.parse(message.body)));
+        stompClient.subscribe('/queue/response.event.' + accountId + '-' + getSessionId(), (message) => showEvent(message.body));
     });
 }
 
@@ -76,6 +78,17 @@ const getAccountId = () =>{
 
 const getTimestamp = () =>{
     return new Date(Date.now()).toISOString();
+}
+
+const getSessionId = () =>{
+    var url = stompClient.ws._transport.url;
+/*    url = url.replace("ws://localhost:8080/gs-guide-websocket/",  "");
+    url = url.replace("/websocket", "");
+    url = url.replace(/^[0-9]+\//, "");
+    console.log(url);*/
+    url = url.match(/\/gs-guide-websocket\/\d*\/(.*)\/websocket/)[1];
+    console.log("Your current session is: " + url);
+    return url;
 }
 
 const getUUID = () =>{

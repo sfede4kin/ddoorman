@@ -18,7 +18,7 @@ public class EventWebsocketController {
     private final KafkaProducerService kafkaProducerService;
     private final EventService eventService;
     private final SimpMessagingTemplate messagingTemplate;
-    private final static String DEST_RESP_EVENT = "/topic/response.event.";
+    private final static String DEST_RESP_EVENT = "/queue/response.event.";
 
     public EventWebsocketController(KafkaProducerService kafkaProducerService, EventService eventService,
                                     SimpMessagingTemplate messagingTemplate) {
