@@ -4,6 +4,7 @@ const keyElementId = "key";
 const doorElementId = "door";
 const accountIdElementId = "accountId";
 const messageElementId = "message";
+const eventElementId = "event";
 
 const setConnected = (connected) => {
     const connectBtn = document.getElementById("connect");
@@ -24,6 +25,7 @@ const connect = () => {
         const accountId = getAccountId();
         console.log(`Connected as account id: ${accountId} frame:${frame}`);
         stompClient.subscribe('/topic/profile.' + accountId, (message) => showProfile(JSON.parse(message.body)));
+        stompClient.subscribe('/topic/response.event.' + accountId, (message) => showEvent(message.body));
     });
 }
 
@@ -50,8 +52,17 @@ const showProfile = (message) => {
     dg.forEach(e => doorTable.insertAdjacentHTML('beforebegin', `<tr><td>${e.door.id}</td><td>${e.door.location}</td><td><button id="openDoor" class="btn btn-success" onclick="sendOpenDoorEvent(${e.door.id})">Open</button></td></tr>`));
 }
 
+const showEvent = (message) => {
+    const eventLine = document.getElementById(eventElementId);
+    let newRow = eventLine.insertRow(-1);
+    let newCell = newRow.insertCell(0);
+    let newText = document.createTextNode(message);
+    newCell.appendChild(newText);
+}
+
 const sendOpenDoorEvent = (doorId) => {
-    var body = {"sourceId": getUUID(), "refId": "", "accountId": getAccountId(), "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
+    const accountId = getAccountId();
+    var body = {"sourceId": getUUID(), "refId": "", "accountId": accountId, "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
     console.log(JSON.stringify(body));
     stompClient.send("/app/event." + accountId, {}, JSON.stringify(body));
 }

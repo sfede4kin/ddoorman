@@ -1,9 +1,13 @@
 package ru.ddoorman.client.model.dto;
 
 import ru.ddoorman.client.model.*;
+import ru.ddoorman.client.model.enumeration.EventTypeEnum;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class DtoUtil {
     public static AccountDto cloneAccountToDto(Account account) {
@@ -28,14 +32,16 @@ public class DtoUtil {
         });
         return doorGroupDto;
     }
-
     public static DoorDto cloneDoorToDto(Door door) {
         return new DoorDto(door.getId(), door.getLocation());
     }
 
-    public static Event cloneDtoToEvent(EventDto event) {
+    public static Event cloneEventDtoToEvent(EventDto event) {
         return new Event(event.getSourceId(), event.getRefId(), event.getAccountId(),
-                event.getKeyId(), event.getDoorId(), event.getTs(), event.getType().name());
+                event.getKeyId(), event.getDoorId(), Timestamp.valueOf(event.getTs()), event.getType().name());
     }
-
+    public static EventDto getResponseEventDto(EventDto event, EventTypeEnum type){
+        return new EventDto(UUID.randomUUID().toString(),event.getSourceId(), event.getAccountId(), event.getKeyId(),
+                            event.getDoorId(), LocalDateTime.now(), type);
+    }
 }

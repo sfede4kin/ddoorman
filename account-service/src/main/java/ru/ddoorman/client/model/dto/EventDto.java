@@ -2,21 +2,24 @@ package ru.ddoorman.client.model.dto;
 
 import ru.ddoorman.client.model.enumeration.EventTypeEnum;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-public class EventDto {
+public class EventDto{
 
     private String sourceId;
     private String refId;
     private Long accountId;
     private Long keyId;
     private Long doorId;
-    private Date ts;
+    private LocalDateTime ts;
     private EventTypeEnum type;
 
-    public EventDto(){};
+    public EventDto() {
+    }
 
-    public EventDto(String sourceId, String refId, Long accountId, Long keyId, Long doorId, Date ts, EventTypeEnum type) {
+    ;
+
+    public EventDto(String sourceId, String refId, Long accountId, Long keyId, Long doorId, LocalDateTime ts, EventTypeEnum type) {
         this.sourceId = sourceId;
         this.refId = refId;
         this.accountId = accountId;
@@ -66,11 +69,11 @@ public class EventDto {
         this.doorId = doorId;
     }
 
-    public Date getTs() {
+    public LocalDateTime getTs() {
         return ts;
     }
 
-    public void setTs(Date ts) {
+    public void setTs(LocalDateTime ts) {
         this.ts = ts;
     }
 
