@@ -8,16 +8,22 @@ spring:
   flyway:
     enabled: true
   kafka:
+    bootstrap-servers: localhost:9092
     partition: 1
     replicas: 1
-    topic:
-      name: requestEventTopic
     producer:
-      bootstrap-servers: localhost:9092
+      topic:
+        name: requestEventTopic
       group-id: app
       auto-offset-reset: earliest
-      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: true
   jackson:
     serialization:
       write-dates-as-timestamps: false

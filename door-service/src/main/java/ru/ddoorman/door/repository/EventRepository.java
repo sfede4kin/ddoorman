@@ -1,7 +1,7 @@
-package ru.ddoorman.client.repository;
+package ru.ddoorman.door.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.ddoorman.client.model.Event;
+import ru.ddoorman.door.model.Event;
 
 public interface EventRepository extends CrudRepository<Event, Long> {
 

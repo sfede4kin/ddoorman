@@ -1,8 +1,6 @@
 let stompClient = null;
 
-const keyElementId = "key";
-const doorElementId = "door";
-const accountIdElementId = "accountId";
+const doorIdElementId = "doorId";
 const eventElementId = "event";
 
 const setConnected = (connected) => {
@@ -17,12 +15,9 @@ const connect = () => {
     stompClient = Stomp.over(new SockJS('/gs-guide-websocket'));
     stompClient.connect({}, (frame) => {
         setConnected(true);
-        getProfile();
-
-        const accountId = getAccountId();
-        console.log(`Connected as account id: ${accountId} frame:${frame}`);
-        stompClient.subscribe('/topic/profile.' + accountId, (message) => showProfile(JSON.parse(message.body)));
-        stompClient.subscribe('/topic/response.event.' + accountId, (message) => showEvent(message.body));
+        const doorId = getDoorId();
+        console.log(`Connected as door id: ${doorId} frame:${frame}`);
+        stompClient.subscribe('/topic/event.' + doorId, (message) => showEvent(message.body));
     });
 }
 
@@ -34,21 +29,6 @@ const disconnect = () => {
     console.log("Disconnected");
 }
 
-const getProfile = () =>{
-    const accountId = getAccountId();
-    stompClient.send("/app/account." + accountId, {}, {});
-}
-
-const showProfile = (message) => {
-    const keyTable = document.getElementById(keyElementId);
-    var kg = message.keyGroups;
-    kg.forEach(e => keyTable.insertAdjacentHTML('beforebegin', `<tr><td>${e.key.id}</td><td>${e.key.type}</td></tr>`));
-
-    const doorTable = document.getElementById(doorElementId);
-    var dg = message.doorGroups;
-    dg.forEach(e => doorTable.insertAdjacentHTML('beforebegin', `<tr><td>${e.door.id}</td><td>${e.door.location}</td><td><button id="openDoor" class="btn btn-success" onclick="sendOpenDoorEvent(${e.door.id})">Open</button></td></tr>`));
-}
-
 const showEvent = (message) => {
     const eventLine = document.getElementById(eventElementId);
     let newRow = eventLine.insertRow(-1);
@@ -57,21 +37,15 @@ const showEvent = (message) => {
     newCell.appendChild(newText);
 }
 
-const sendOpenDoorEvent = (doorId) => {
+/*const sendOpenDoorEvent = (doorId) => {
     const accountId = getAccountId();
     var body = {"sourceId": getUUID(), "refId": "", "accountId": accountId, "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
     console.log(JSON.stringify(body));
     stompClient.send("/app/event." + accountId, {}, JSON.stringify(body));
-}
+}*/
 
-/*
-const clearData = () =>{
-    $("#key-table tbody").remove();
-}
-*/
-
-const getAccountId = () =>{
-    return document.getElementById(accountIdElementId).value;
+const getDoorId = () =>{
+    return document.getElementById(doorIdElementId).value;
 }
 
 const getTimestamp = () =>{

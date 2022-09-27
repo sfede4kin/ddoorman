@@ -1,4 +1,4 @@
-package ru.ddoorman.client.config;
+package ru.ddoorman.door.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
