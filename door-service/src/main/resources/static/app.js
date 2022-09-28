@@ -40,7 +40,7 @@ const showEvent = (message) => {
 
 const sendDoorOpenedEvent = (message) => {
     var msgObj = JSON.parse(message);
-    var body = {"sourceId": getUUID(), "refId": msgObj.sourceId, "accountId": msgObj.accountId, "keyId": msgObj.keyId, "doorId": msgObj.doorId, "ts": getTimestamp(), "type": "OPENED"};
+    var body = {"sourceId": getUUID(), "refId": msgObj.sourceId, "accountId": msgObj.accountId, "keyId": msgObj.keyId, "doorId": msgObj.doorId, "ts": getTimestamp(), "type": "OPENED", "appSessionId": msgObj.appSessionId};
     var bodyJson = JSON.stringify(body);
     console.log(bodyJson);
     stompClient.send("/door/response.event." + msgObj.doorId, {}, bodyJson);

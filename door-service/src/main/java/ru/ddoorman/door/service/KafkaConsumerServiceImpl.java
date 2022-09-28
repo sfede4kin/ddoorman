@@ -11,8 +11,6 @@ import ru.ddoorman.client.model.enumeration.EventTypeEnum;
 import ru.ddoorman.door.component.DoorSessionComponent;
 import ru.ddoorman.door.model.dto.DtoUtil;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);

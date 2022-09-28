@@ -13,13 +13,15 @@ public class EventDto{
     private Long doorId;
     private LocalDateTime ts;
     private EventTypeEnum type;
+    private String appSessionId;
 
     public EventDto() {
     }
 
     ;
 
-    public EventDto(String sourceId, String refId, Long accountId, Long keyId, Long doorId, LocalDateTime ts, EventTypeEnum type) {
+    public EventDto(String sourceId, String refId, Long accountId, Long keyId, Long doorId, LocalDateTime ts,
+                    EventTypeEnum type, String appSessionId) {
         this.sourceId = sourceId;
         this.refId = refId;
         this.accountId = accountId;
@@ -27,6 +29,7 @@ public class EventDto{
         this.doorId = doorId;
         this.ts = ts;
         this.type = type;
+        this.appSessionId = appSessionId;
     }
 
     public String getSourceId() {
@@ -85,16 +88,25 @@ public class EventDto{
         this.type = type;
     }
 
+    public String getAppSessionId() {
+        return appSessionId;
+    }
+
+    public void setAppSessionId(String appSessionId) {
+        this.appSessionId = appSessionId;
+    }
+
     @Override
     public String toString() {
         return "EventDto{" +
-                "sourceId=" + sourceId +
-                ", refId=" + refId +
+                "sourceId='" + sourceId + '\'' +
+                ", refId='" + refId + '\'' +
                 ", accountId=" + accountId +
                 ", keyId=" + keyId +
                 ", doorId=" + doorId +
                 ", ts=" + ts +
                 ", type=" + type +
+                ", appSessionId='" + appSessionId + '\'' +
                 '}';
     }
 }

@@ -61,7 +61,7 @@ const showEvent = (message) => {
 
 const sendOpenDoorEvent = (doorId) => {
     const accountId = getAccountId();
-    var body = {"sourceId": getUUID(), "refId": "", "accountId": accountId, "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
+    var body = {"sourceId": getUUID(), "refId": "", "accountId": accountId, "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN", "appSessionId": getSessionId()};
     console.log(JSON.stringify(body));
     stompClient.send("/app/event." + accountId, {}, JSON.stringify(body));
 }
@@ -82,10 +82,6 @@ const getTimestamp = () =>{
 
 const getSessionId = () =>{
     var url = stompClient.ws._transport.url;
-/*    url = url.replace("ws://localhost:8080/gs-guide-websocket/",  "");
-    url = url.replace("/websocket", "");
-    url = url.replace(/^[0-9]+\//, "");
-    console.log(url);*/
     url = url.match(/\/gs-guide-websocket\/\d*\/(.*)\/websocket/)[1];
     console.log("Your current session is: " + url);
     return url;

@@ -43,11 +43,11 @@ public class DtoUtil {
     }
     public static EventDto getResponseEventDto(EventDto event, EventTypeEnum type){
         return new EventDto(UUID.randomUUID().toString(),event.getSourceId(), event.getAccountId(), event.getKeyId(),
-                            event.getDoorId(), LocalDateTime.now(ZoneOffset.UTC), type);
+                            event.getDoorId(), LocalDateTime.now(ZoneOffset.UTC), type, event.getAppSessionId());
     }
 
     public static EventDto cloneEventDto(EventDto event){
         return new EventDto(event.getSourceId(), event.getRefId(), event.getAccountId(), event.getKeyId(),
-                event.getDoorId(), event.getTs(), event.getType());
+                event.getDoorId(), event.getTs(), event.getType(), event.getAppSessionId());
     }
 }

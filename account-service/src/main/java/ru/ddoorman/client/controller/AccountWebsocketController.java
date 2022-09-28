@@ -5,10 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import ru.ddoorman.client.model.dto.AccountDto;
 import ru.ddoorman.client.model.dto.DtoUtil;
 import ru.ddoorman.client.service.AccountService;
 
