@@ -12,12 +12,13 @@ const setConnected = (connected) => {
 }
 
 const connect = () => {
+    const doorId = getDoorId();
+    var headers = {"doorId": doorId};
     stompClient = Stomp.over(new SockJS('/gs-guide-websocket'));
-    stompClient.connect({}, (frame) => {
+    stompClient.connect(headers, (frame) => {
         setConnected(true);
-        const doorId = getDoorId();
         console.log(`Connected as door id: ${doorId} frame:${frame}`);
-        stompClient.subscribe('/topic/event.' + doorId, (message) => showEvent(message.body));
+        stompClient.subscribe('/queue/event.' + doorId, (message) => {showEvent(message.body); sendDoorOpenedEvent(message.body)}, headers);
     });
 }
 
@@ -37,12 +38,14 @@ const showEvent = (message) => {
     newCell.appendChild(newText);
 }
 
-/*const sendOpenDoorEvent = (doorId) => {
-    const accountId = getAccountId();
-    var body = {"sourceId": getUUID(), "refId": "", "accountId": accountId, "keyId": "1", "doorId": doorId, "ts": getTimestamp(), "type": "OPEN"};
-    console.log(JSON.stringify(body));
-    stompClient.send("/app/event." + accountId, {}, JSON.stringify(body));
-}*/
+const sendDoorOpenedEvent = (message) => {
+    var msgObj = JSON.parse(message);
+    var body = {"sourceId": getUUID(), "refId": msgObj.sourceId, "accountId": msgObj.accountId, "keyId": msgObj.keyId, "doorId": msgObj.doorId, "ts": getTimestamp(), "type": "OPENED"};
+    var bodyJson = JSON.stringify(body);
+    console.log(bodyJson);
+    stompClient.send("/door/response.event." + msgObj.doorId, {}, bodyJson);
+    showEvent(bodyJson);
+}
 
 const getDoorId = () =>{
     return document.getElementById(doorIdElementId).value;

@@ -3,6 +3,7 @@ package ru.ddoorman.client.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -28,18 +29,21 @@ public class EventWebsocketController {
     }
 
     @MessageMapping("/event.{accountId}")
-    public void sendEvent(@DestinationVariable String accountId, EventDto event) {
+    public void sendEvent(@DestinationVariable String accountId, @Header("simpSessionId") String sessionId, EventDto event) {
         log.debug(event.toString());
         EventDto eventResponse = DtoUtil.getResponseEventDto(event, event.getType());
         try {
+            //TODO async callback after success send to kafka ?
+            //https://docs.spring.io/spring-kafka/reference/html/#ex-jdbc-sync
             kafkaProducerService.sendMessage(event);
-            eventService.save(DtoUtil.cloneEventDtoToEvent(event)); //TODO async callback after success send to kafka ?
+            eventService.save(DtoUtil.cloneEventDtoToEvent(event));
         } catch (Exception e) {
             log.error("event processing error", e);
             eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
+            eventService.save(DtoUtil.cloneEventDtoToEvent(eventResponse));
         } finally {
             log.debug("send response event: {}", eventResponse.toString());
-            messagingTemplate.convertAndSend(DEST_RESP_EVENT + accountId, eventResponse);
+            messagingTemplate.convertAndSend(DEST_RESP_EVENT + accountId + '-' + sessionId , eventResponse);
         }
     }
 }

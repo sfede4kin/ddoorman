@@ -24,7 +24,6 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
 
     public void sendMessage(EventDto msg) {
         log.info("topic: {}, msg: {}", TOPIC_NAME, msg);
-        //ListenableFuture<SendResult<Long, EventDto>> future = kafkaTemplate.send(TOPIC_NAME, msg);
         ListenableFuture<SendResult<String, EventDto>> future =
                 kafkaTemplate.send(new ProducerRecord<String, EventDto>(TOPIC_NAME, msg.getSourceId(), msg));
 
@@ -34,6 +33,5 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
             log.error("kafka send error: {}", ex.getMessage());
             //ProducerRecord<Long, EventDto> failed = ex.getFailedProducerRecord();
         });
-
     }
 }

@@ -11,6 +11,20 @@ spring:
     bootstrap-servers: localhost:9092
     partition: 1
     replicas: 1
+    consumer:
+      topic:
+        name: responseEventTopic
+      group-id: app
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            #            type:
+            #              mapping: "door:ru.ddoorman.door.model.dto.EventDto,client:ru.ddoorman.client.model.dto.EventDto"
+            trusted:
+              packages: "*"
     producer:
       topic:
         name: requestEventTopic

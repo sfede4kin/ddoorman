@@ -17,18 +17,18 @@ public class AccountWebsocketController {
     private static final Logger log = LoggerFactory.getLogger(AccountWebsocketController.class);
     private final AccountService accountService;
     private final SimpMessagingTemplate messagingTemplate;
+
+    private final static String DEST_RESP_PROFILE = "/queue/profile.";
     public AccountWebsocketController(AccountService accountService, SimpMessagingTemplate messagingTemplate){
         this.accountService = accountService;
         this.messagingTemplate = messagingTemplate;
     }
 
     @MessageMapping("/account.{accountId}")
-    //@SendTo("/queue/profile.{accountId}")
     public void getAccount(@DestinationVariable String accountId, @Header("simpSessionId") String sessionId) {
         log.info("account id:{}", accountId);
         var account = accountService.findById(Long.valueOf(accountId));
         log.debug(account.get().toString());
-       // return account.map(DtoUtil::cloneAccountToDto).get();
-        messagingTemplate.convertAndSend("/queue/profile." + accountId + '-' + sessionId, DtoUtil.cloneAccountToDto(account.get()));
+        messagingTemplate.convertAndSend(DEST_RESP_PROFILE + accountId + '-' + sessionId, DtoUtil.cloneAccountToDto(account.get()));
     }
 }
