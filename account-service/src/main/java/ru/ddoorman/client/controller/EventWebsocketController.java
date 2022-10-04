@@ -2,48 +2,45 @@ package ru.ddoorman.client.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.ddoorman.client.model.dto.DtoUtil;
 import ru.ddoorman.client.model.dto.EventDto;
 import ru.ddoorman.client.model.enumeration.EventTypeEnum;
-import ru.ddoorman.client.service.EventService;
+import ru.ddoorman.client.service.EventDatastoreService;
+import ru.ddoorman.client.service.EventMessagingService;
 import ru.ddoorman.client.service.KafkaProducerService;
 
 @Controller
 public class EventWebsocketController {
     private static final Logger log = LoggerFactory.getLogger(EventWebsocketController.class);
     private final KafkaProducerService kafkaProducerService;
-    private final EventService eventService;
-    private final SimpMessagingTemplate messagingTemplate;
-    private final static String DEST_RESP_EVENT = "/queue/response.event.";
+    private final EventDatastoreService eventDatastoreService;
+    private final EventMessagingService eventMessagingService;
 
-    public EventWebsocketController(KafkaProducerService kafkaProducerService, EventService eventService,
-                                    SimpMessagingTemplate messagingTemplate) {
+    public EventWebsocketController(KafkaProducerService kafkaProducerService, EventDatastoreService eventDatastoreService,
+                                    EventMessagingService eventMessagingService) {
         this.kafkaProducerService = kafkaProducerService;
-        this.eventService = eventService;
-        this.messagingTemplate = messagingTemplate;
+        this.eventDatastoreService = eventDatastoreService;
+        this.eventMessagingService = eventMessagingService;
     }
 
     @MessageMapping("/event.{accountId}")
-    public void sendEvent(@DestinationVariable String accountId, @Header("simpSessionId") String sessionId, EventDto event) {
+    public void sendEvent(EventDto event) {
         log.debug(event.toString());
         EventDto eventResponse = DtoUtil.getResponseEventDto(event, event.getType());
         try {
             //TODO async callback after success send to kafka ?
             //https://docs.spring.io/spring-kafka/reference/html/#ex-jdbc-sync
             kafkaProducerService.sendMessage(event);
-            eventService.save(DtoUtil.cloneEventDtoToEvent(event));
+            eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(event));
         } catch (Exception e) {
             log.error("event processing error", e);
             eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
-            eventService.save(DtoUtil.cloneEventDtoToEvent(eventResponse));
+            eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(eventResponse));
         } finally {
             log.debug("send response event: {}", eventResponse.toString());
-            messagingTemplate.convertAndSend(DEST_RESP_EVENT + accountId + '-' + sessionId , eventResponse);
+            eventMessagingService.send(eventResponse);
         }
     }
 }

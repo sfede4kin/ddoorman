@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import ru.ddoorman.client.model.dto.AccountDto;
 import ru.ddoorman.client.model.dto.DtoUtil;
-import ru.ddoorman.client.service.AccountService;
+import ru.ddoorman.client.service.AccountDatastoreService;
 
 import java.util.NoSuchElementException;
 
@@ -17,9 +17,9 @@ import java.util.NoSuchElementException;
 public class AccountRestController {
 
     private static final Logger log = LoggerFactory.getLogger(AccountRestController.class);
-    public final AccountService accountService;
+    public final AccountDatastoreService accountService;
 
-    public AccountRestController(AccountService accountService){
+    public AccountRestController(AccountDatastoreService accountService){
         this.accountService = accountService;
     }
 

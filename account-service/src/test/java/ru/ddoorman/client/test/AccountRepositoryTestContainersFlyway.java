@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.ddoorman.client.repository.AccountRepository;
-import ru.ddoorman.client.service.AccountService;
+import ru.ddoorman.client.service.AccountDatastoreService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +20,7 @@ public class AccountRepositoryTestContainersFlyway {
     private AccountRepository accountRepository;
 
     @Autowired
-    private AccountService accountService;
+    private AccountDatastoreService accountService;
 
     @Test
     public void shouldGetAccount(){

@@ -3,7 +3,6 @@ package ru.ddoorman.door.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import ru.ddoorman.client.model.dto.EventDto;
 import ru.ddoorman.client.model.enumeration.EventTypeEnum;
@@ -13,17 +12,18 @@ import ru.ddoorman.door.model.dto.DtoUtil;
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
-    private final SimpMessagingTemplate messagingTemplate;
     private final DoorSessionComponent doorSessionComponent;
     private final KafkaProducerService kafkaProducerService;
-    private final EventService eventService;
+    private final EventDatastoreService eventService;
+    private final EventMessagingService eventMessagingService;
 
-    public KafkaConsumerServiceImpl(SimpMessagingTemplate messagingTemplate, DoorSessionComponent doorSessionComponent,
-                                    KafkaProducerService kafkaProducerService, EventService eventService){
-        this.messagingTemplate = messagingTemplate;
+    public KafkaConsumerServiceImpl(DoorSessionComponent doorSessionComponent,
+                                    KafkaProducerService kafkaProducerService, EventDatastoreService eventService,
+                                    EventMessagingService eventMessagingService){
         this.doorSessionComponent = doorSessionComponent;
         this.kafkaProducerService = kafkaProducerService;
         this.eventService = eventService;
+        this.eventMessagingService = eventMessagingService;
     }
 
     @KafkaListener(topics = "#{kafkaConfig.consumerTopicName}", groupId = "#{kafkaConfig.consumerGroupId}")
@@ -32,7 +32,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
         if(doorSessionComponent.containsValue(event.getDoorId())) {
             log.info("door is connected: {}", event.getDoorId());
-            messagingTemplate.convertAndSend("/queue/event." + event.getDoorId(), DtoUtil.cloneEventDto(event));
+            eventMessagingService.send(event);
         }else{
             log.info("door is disconnected: {}", event.getDoorId());
             EventDto eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
@@ -40,5 +40,4 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
             eventService.save(DtoUtil.cloneEventDtoToEvent(eventResponse));
         }
     }
-
 }

@@ -4,6 +4,6 @@ import ru.ddoorman.client.model.Account;
 
 import java.util.Optional;
 
-public interface AccountService {
+public interface AccountDatastoreService {
     Optional<Account> findById(Long id);
 }

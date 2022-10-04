@@ -6,11 +6,11 @@ import ru.ddoorman.client.repository.AccountRepository;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl implements AccountService{
+public class AccountDatastoreServiceImpl implements AccountDatastoreService {
 
     private final AccountRepository accountRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository){
+    public AccountDatastoreServiceImpl(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
     }
 

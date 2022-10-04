@@ -2,7 +2,7 @@ package ru.ddoorman.door.service;
 
 import ru.ddoorman.door.model.Event;
 
-public interface EventService {
+public interface EventDatastoreService {
 
     Event save(Event event);
 

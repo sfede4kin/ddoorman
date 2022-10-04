@@ -5,10 +5,10 @@ import ru.ddoorman.client.model.Event;
 import ru.ddoorman.client.repository.EventRepository;
 
 @Service
-public class EventServiceImpl implements EventService{
+public class EventDatastoreServiceImpl implements EventDatastoreService {
     private final EventRepository eventRepository;
 
-    public EventServiceImpl(EventRepository eventRepository){
+    public EventDatastoreServiceImpl(EventRepository eventRepository){
         this.eventRepository = eventRepository;
     }
 
