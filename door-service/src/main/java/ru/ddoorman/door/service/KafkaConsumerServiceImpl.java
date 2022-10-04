@@ -2,7 +2,6 @@ package ru.ddoorman.door.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,6 @@ import ru.ddoorman.door.model.dto.DtoUtil;
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
-    @Value(value = "${spring.kafka.consumer.topic.name}")
-    private String TOPIC_NAME;
     private final SimpMessagingTemplate messagingTemplate;
     private final DoorSessionComponent doorSessionComponent;
     private final KafkaProducerService kafkaProducerService;
@@ -29,7 +26,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
         this.eventService = eventService;
     }
 
-    @KafkaListener(topics = "requestEventTopic", groupId = "door")
+    @KafkaListener(topics = "#{kafkaConfig.consumerTopicName}", groupId = "#{kafkaConfig.consumerGroupId}")
     public void consume(EventDto event){
         log.info("event consumed: {}", event.toString());
 

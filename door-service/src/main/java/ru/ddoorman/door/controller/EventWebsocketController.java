@@ -68,16 +68,6 @@ public class EventWebsocketController {
     }
 
     private Long getDoorId(AbstractSubProtocolEvent event){
-        /*var genericMessage = (GenericMessage<byte[]>) event.getMessage();
-        var simpDestination = (String) genericMessage.getHeaders().get("simpDestination");
-        if (simpDestination == null) {
-            log.error("Can not get simpDestination header, headers:{}", genericMessage.getHeaders());
-            throw new RuntimeException("Can not get simpDestination header");
-        }
-        var doorId = Long.parseLong(simpDestination.replace(DEST_EVENT, ""));
-        log.info("door id parsed: {}", doorId);
-        return doorId;*/
-
         var nativeHeaders = (Map<String, List<String>>)event.getMessage().getHeaders().get("nativeHeaders");
         var doorId = Long.parseLong(nativeHeaders.get("doorId").get(0));
         log.info("door id parsed: {}", doorId);

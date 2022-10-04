@@ -12,33 +12,50 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaTopicConfig {
+public class KafkaConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
-    private String BOOTSTRAP_ADDRESS;
+    private String bootstratServer;
 
     @Value(value = "${spring.kafka.producer.topic.name}")
-    private String PRODUCER_TOPIC_NAME;
+    private String producerTopicName;
 
     @Value(value = "${spring.kafka.partition}")
-    private String PARTITION;
+    private String partition;
 
     @Value(value = "${spring.kafka.replicas}")
-    private String REPLICAS;
+    private String replicas;
+
+    @Value(value = "${spring.kafka.consumer.topic.name}")
+    private String consumerTopicName;
+
+    @Value(value = "${spring.kafka.consumer.group-id}")
+    private String consumerGroupId;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_ADDRESS);
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstratServer);
         return new KafkaAdmin(configs);
     }
 
     @Bean
     public NewTopic topic() {
-        return TopicBuilder.name(PRODUCER_TOPIC_NAME)
-                .partitions(Integer.parseInt(PARTITION))
-                .replicas(Short.parseShort(REPLICAS))
+        return TopicBuilder.name(producerTopicName)
+                .partitions(Integer.parseInt(partition))
+                .replicas(Short.parseShort(replicas))
                 .build();
     }
 
+    public String getProducerTopicName() {
+        return producerTopicName;
+    }
+
+    public String getConsumerTopicName() {
+        return consumerTopicName;
+    }
+
+    public String getConsumerGroupId() {
+        return consumerGroupId;
+    }
 }
