@@ -27,19 +27,19 @@ public class EventWebsocketController {
 
     @MessageMapping("/event.{accountId}")
     public void sendEvent(EventDto event) {
-        log.debug(event.toString());
+        log.info("event from account: {}", event.toString());
         EventDto eventResponse = DtoUtil.getResponseEventDto(event, event.getType());
         try {
             //TODO async callback after success send to kafka ?
             //https://docs.spring.io/spring-kafka/reference/html/#ex-jdbc-sync
-            kafkaProducerService.sendMessage(event);
             eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(event));
+            kafkaProducerService.sendMessage(event);
         } catch (Exception e) {
             log.error("event processing error", e);
             eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
             eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(eventResponse));
         } finally {
-            log.debug("send response event: {}", eventResponse.toString());
+            log.info("send response event: {}", eventResponse.toString());
             eventMessagingService.send(eventResponse);
         }
     }

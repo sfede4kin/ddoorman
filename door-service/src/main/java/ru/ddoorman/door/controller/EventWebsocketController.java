@@ -3,6 +3,7 @@ package ru.ddoorman.door.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -63,8 +64,13 @@ public class EventWebsocketController {
     @MessageMapping("/response.event.{doorId}")
     public void sendEvent(@DestinationVariable String doorId, EventDto event) {
         log.info("response event from door: {}", event.toString());
-        kafkaProducerService.sendMessage(event);
-        eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(event)); //TODO async callback after success send to kafka ?
+        try {
+            eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(event));
+            kafkaProducerService.sendMessage(event);
+        }catch (Exception e){
+            log.error("response event from door processing error", e);
+            throw new MessagingException("response event from door processing error", e);
+        }
     }
 
     private Long getDoorId(AbstractSubProtocolEvent event){
