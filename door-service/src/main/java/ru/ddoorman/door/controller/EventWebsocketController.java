@@ -9,7 +9,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.AbstractSubProtocolEvent;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 import ru.ddoorman.client.model.dto.EventDto;
@@ -32,15 +31,6 @@ public class EventWebsocketController {
 
         this.kafkaProducerService = kafkaProducerService;
         this.doorSessionComponent = doorSessionComponent;
-    }
-
-    @EventListener
-    public void handleSessionSubscribeEvent(SessionConnectEvent event) {
-        log.info("SessionConnectEvent headers: {}", event.getMessage().getHeaders());
-        Long doorId = getDoorId(event);
-        if(doorSessionComponent.containsValue(doorId)){
-            log.error("door is already connected: {}", doorId);
-        }
     }
     @EventListener
     public void handleSessionSubscribeEvent(SessionSubscribeEvent event) {
