@@ -1,4 +1,4 @@
-package ru.ddoorman.client.model;
+package ru.ddoorman.extractor.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;

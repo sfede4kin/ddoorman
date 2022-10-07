@@ -26,6 +26,7 @@ spring:
             trusted:
               packages: "*"
     producer:
+      acks: 0
       topic:
         name: requestEventTopic
       group-id: app

@@ -14,8 +14,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 import ru.ddoorman.client.model.dto.EventDto;
 import ru.ddoorman.door.component.DoorSessionComponent;
-import ru.ddoorman.door.model.dto.DtoUtil;
-import ru.ddoorman.door.service.EventDatastoreService;
 import ru.ddoorman.door.service.KafkaProducerService;
 
 import java.util.List;
@@ -25,17 +23,14 @@ import java.util.Map;
 public class EventWebsocketController {
     private static final Logger log = LoggerFactory.getLogger(EventWebsocketController.class);
     private final KafkaProducerService kafkaProducerService;
-    private final EventDatastoreService eventDatastoreService;
     private final DoorSessionComponent doorSessionComponent;
     private final static String DEST_EVENT = "/queue/event.";
     private final static String DEST_RESP_EVENT = "/queue/response.event.";
 
     public EventWebsocketController(KafkaProducerService kafkaProducerService,
-                                    EventDatastoreService eventService,
                                     DoorSessionComponent doorSessionComponent) {
 
         this.kafkaProducerService = kafkaProducerService;
-        this.eventDatastoreService = eventService;
         this.doorSessionComponent = doorSessionComponent;
     }
 
@@ -65,7 +60,6 @@ public class EventWebsocketController {
     public void sendEvent(@DestinationVariable String doorId, EventDto event) {
         log.info("response event from door: {}", event.toString());
         try {
-            eventDatastoreService.save(DtoUtil.cloneEventDtoToEvent(event));
             kafkaProducerService.sendMessage(event);
         }catch (Exception e){
             log.error("response event from door processing error", e);

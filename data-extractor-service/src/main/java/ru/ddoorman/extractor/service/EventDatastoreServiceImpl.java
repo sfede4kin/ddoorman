@@ -1,8 +1,8 @@
-package ru.ddoorman.client.service;
+package ru.ddoorman.extractor.service;
 
 import org.springframework.stereotype.Service;
-import ru.ddoorman.client.model.Event;
-import ru.ddoorman.client.repository.EventRepository;
+import ru.ddoorman.extractor.model.Event;
+import ru.ddoorman.extractor.repository.EventRepository;
 
 @Service
 public class EventDatastoreServiceImpl implements EventDatastoreService {
