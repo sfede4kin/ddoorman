@@ -14,15 +14,13 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
     private final DoorSessionComponent doorSessionComponent;
     private final KafkaProducerService kafkaProducerService;
-    private final EventDatastoreService eventService;
     private final EventMessagingService eventMessagingService;
 
     public KafkaConsumerServiceImpl(DoorSessionComponent doorSessionComponent,
-                                    KafkaProducerService kafkaProducerService, EventDatastoreService eventService,
+                                    KafkaProducerService kafkaProducerService,
                                     EventMessagingService eventMessagingService){
         this.doorSessionComponent = doorSessionComponent;
         this.kafkaProducerService = kafkaProducerService;
-        this.eventService = eventService;
         this.eventMessagingService = eventMessagingService;
     }
 
@@ -35,9 +33,8 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
             eventMessagingService.send(event);
         }else{
             log.info("door is disconnected: {}", event.getDoorId());
-            EventDto eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
+            EventDto eventResponse = DtoUtil.createReferenceEventDto(event, EventTypeEnum.FAILED);
             kafkaProducerService.sendMessage(eventResponse);
-            eventService.save(DtoUtil.cloneEventDtoToEvent(eventResponse));
         }
     }
 }

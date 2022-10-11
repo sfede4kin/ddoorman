@@ -30,7 +30,7 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
         future.addCallback(result -> {
             log.info("kafka send ok, offset {}", result.getRecordMetadata().offset());
         }, (KafkaFailureCallback<String, EventDto>) ex -> {
-            log.error("kafka send error: {}", ex.getMessage());
+            log.error("event id kafka send error: {} - {}", ex.getFailedProducerRecord().key(), ex.getMessage());
         });
 
     }

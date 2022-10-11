@@ -43,18 +43,6 @@ create table key_group_door_group
     door_group_id bigint not null,
     primary key(key_group_id, door_group_id)
 );
-
-create table door_event
-(
-    id         bigserial not null primary key,
-    source_id  varchar(36) not null,
-    ref_id     varchar(36),
-    account_id bigint not null references account (id),
-    key_id     bigint not null references door_key (id),
-    door_id    bigint not null references door (id),
-    ts         timestamp,
-    type       varchar(10) not null
-);
 --Master data
 --account
 insert into account(name, address, phone, key_group_id) values ('name1', 'address1', 'phone1', '1');
