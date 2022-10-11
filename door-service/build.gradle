@@ -2,13 +2,6 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -18,14 +11,6 @@ dependencies {
     implementation 'org.webjars:sockjs-client'
     implementation 'org.webjars:stomp-websocket'
     implementation 'org.webjars:bootstrap'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-    testImplementation 'org.assertj:assertj-core'
-    testImplementation 'org.mockito:mockito-core'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
-    testImplementation 'org.testcontainers:junit-jupiter'
 }
 
 test {
@@ -34,7 +19,6 @@ test {
         events "passed", "skipped", "failed"
     }
 }
-
 
 compileJava.options.encoding = 'UTF-8'
 
