@@ -1,4 +1,4 @@
-package ru.ddoorman.extractor.config;
+package ru.ddoorman.door.event.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.springframework.beans.factory.annotation.Value;

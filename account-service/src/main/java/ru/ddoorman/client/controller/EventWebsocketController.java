@@ -25,12 +25,12 @@ public class EventWebsocketController {
     @MessageMapping("/event.{accountId}")
     public void sendEvent(EventDto event) {
         log.info("event from account: {}", event.toString());
-        EventDto eventResponse = DtoUtil.getResponseEventDto(event, event.getType());
+        EventDto eventResponse = DtoUtil.createReferenceEventDto(event, event.getType());
         try {
             kafkaProducerService.sendMessage(event);
         } catch (Exception e) {
             log.error("event processing error", e);
-            eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
+            eventResponse = DtoUtil.createReferenceEventDto(event, EventTypeEnum.FAILED);
             throw new MessagingException("response event from door processing error", e);
         } finally {
             log.info("send response event: {}", eventResponse.toString());

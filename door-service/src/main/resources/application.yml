@@ -1,10 +1,6 @@
 server:
   port: 8081
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5430/ddoormanDB
-    username: usr
-    password: pwd
   kafka:
     bootstrap-servers: localhost:9092
     partition: 1

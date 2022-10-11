@@ -1,11 +1,11 @@
-package ru.ddoorman.extractor.service;
+package ru.ddoorman.door.event.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import ru.ddoorman.client.model.dto.EventDto;
-import ru.ddoorman.extractor.model.dto.DtoUtil;
+import ru.ddoorman.door.event.model.dto.DtoUtil;
 
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {

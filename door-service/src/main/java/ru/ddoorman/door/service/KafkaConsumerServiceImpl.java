@@ -33,7 +33,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
             eventMessagingService.send(event);
         }else{
             log.info("door is disconnected: {}", event.getDoorId());
-            EventDto eventResponse = DtoUtil.getResponseEventDto(event, EventTypeEnum.FAILED);
+            EventDto eventResponse = DtoUtil.createReferenceEventDto(event, EventTypeEnum.FAILED);
             kafkaProducerService.sendMessage(eventResponse);
         }
     }

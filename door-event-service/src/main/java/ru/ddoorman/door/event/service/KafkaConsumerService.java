@@ -1,4 +1,4 @@
-package ru.ddoorman.extractor.service;
+package ru.ddoorman.door.event.service;
 
 import ru.ddoorman.client.model.dto.EventDto;
 

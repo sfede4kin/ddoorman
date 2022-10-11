@@ -7,7 +7,7 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 public class DtoUtil {
-    public static EventDto getResponseEventDto(EventDto event, EventTypeEnum type){
+    public static EventDto createReferenceEventDto(EventDto event, EventTypeEnum type){
         return new EventDto(UUID.randomUUID().toString(),event.getSourceId(), event.getAccountId(), event.getKeyId(),
                             event.getDoorId(), LocalDateTime.now(ZoneOffset.UTC), type, event.getAppSessionId());
     }

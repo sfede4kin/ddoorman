@@ -10,12 +10,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'ch.qos.logback:logback-classic'
-    implementation 'org.postgresql:postgresql'
     implementation 'org.webjars:webjars-locator-core'
     implementation 'org.webjars:sockjs-client'
     implementation 'org.webjars:stomp-websocket'
@@ -28,7 +26,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:postgresql'
 }
 
 test {

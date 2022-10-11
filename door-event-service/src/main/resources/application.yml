@@ -2,9 +2,11 @@ server:
   port: 8082
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5430/ddoormanDB
+    url: jdbc:postgresql://localhost:5431/ddoorman-door-event-service-db
     username: usr
     password: pwd
+  flyway:
+    enabled: true
   kafka:
     bootstrap-servers: localhost:9092
     partition: 1

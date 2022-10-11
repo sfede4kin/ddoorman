@@ -1,11 +1,11 @@
-package ru.ddoorman.extractor;
+package ru.ddoorman.door.event;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ExtractorServiceApp {
+public class DoorEventServiceApp {
     public static void main(String... args){
-        SpringApplication.run(ExtractorServiceApp.class, args);
+        SpringApplication.run(DoorEventServiceApp.class, args);
     }
 }

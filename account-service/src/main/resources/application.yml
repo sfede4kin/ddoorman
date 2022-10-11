@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5430/ddoormanDB
+    url: jdbc:postgresql://localhost:5430/ddoorman-account-service-db
     username: usr
     password: pwd
   flyway:

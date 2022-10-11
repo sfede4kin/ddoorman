@@ -1,4 +1,4 @@
-package ru.ddoorman.extractor.model;
+package ru.ddoorman.door.event.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
