@@ -1,0 +1,48 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/ddoorman-account-service-db
+    username: usr
+    password: pwd
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    partition: 1
+    replicas: 1
+    consumer:
+      topic:
+        name: responseEventTopic
+      group-id: app
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            #            type:
+            #              mapping: "door:ru.ddoorman.door.model.dto.EventDto,client:ru.ddoorman.client.model.dto.EventDto"
+            trusted:
+              packages: "*"
+    producer:
+      acks: 0
+      topic:
+        name: requestEventTopic
+      group-id: app
+      auto-offset-reset: earliest
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: TRACE

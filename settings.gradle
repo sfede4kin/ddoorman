@@ -1,0 +1,6 @@
+rootProject.name = 'ddoorman'
+include 'account-service'
+include 'door-service'
+include 'kafka-service'
+include 'door-event-service'
+

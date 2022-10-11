@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:latest://localhost:5430/ddoormanDB
+    username: usr
+    password: pwd

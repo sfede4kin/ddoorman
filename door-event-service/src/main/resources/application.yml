@@ -1,0 +1,35 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5431/ddoorman-door-event-service-db
+    username: usr
+    password: pwd
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    partition: 1
+    replicas: 1
+    consumer:
+      topic:
+        request:
+          name: requestEventTopic
+        response:
+          name: responseEventTopic
+      group-id: extractor
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+          spring:
+            json:
+              trusted:
+                packages: "*"
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: TRACE
